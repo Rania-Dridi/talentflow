@@ -61,3 +61,11 @@ pytest
 ## Screenshots
 
 In `docs/screenshots/`: dashboard, pipeline board, job list.
+
+## Live demo (no server)
+
+https://rania-dridi.github.io/demo/talentflow/
+
+The `demo/` folder is a browser version of the app: the same business rules ported to JavaScript
+(`demo/rules.js`, checked by `node --test demo/rules.test.js`) and the same CSS. State is kept in `localStorage`.
+Build it with `python scripts/build_demo.py` (output in `dist-demo/`).
