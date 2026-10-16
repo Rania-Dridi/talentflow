@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Pipeline · TalentFlow{% endblock %}
+{% block content %}
+<header class="top">
+  <div><p class="eyebrow">Pipeline</p><h1>Suivi des candidats</h1></div>
+  <form method="get" action="/board">
+    <select name="job_id" onchange="this.form.submit()" aria-label="Offre">
+      {% for job in jobs %}<option value="{{ job.id }}" {{ 'selected' if job.id == selected }}>{{ job.title }}{{ ' (clôturée)' if job.status.value == 'closed' }}</option>{% endfor %}
+    </select>
+  </form>
+</header>
+<p class="muted" id="msg" role="status">Glissez une carte d'une colonne à l'autre pour faire avancer un candidat.</p>
+
+<section class="board" id="board">
+  {% for col in columns %}
+  <div class="col stage-{{ col.stage.value }}" data-stage="{{ col.stage.value }}">
+    <h3>{{ col.label }} <span class="count">{{ col.cards | length }}</span></h3>
+    <div class="drop">
+      {% for c in col.cards %}
+      <article class="cand" draggable="true" data-id="{{ c.id }}">
+        <div class="row"><span class="avatar">{{ c.initials }}</span><strong>{{ c.full_name }}</strong><span class="score s{{ (c.score // 20) }}">{{ c.score }}</span></div>
+        <p>{{ c.headline }}</p>
+        <div class="tags">{% for s in c.skill_list[:3] %}<span>{{ s }}</span>{% endfor %}</div>
+        <small>{{ c.years_experience }} an{{ 's' if c.years_experience > 1 }} · {{ c.source }}</small>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='js/board.js') }}"></script>{% endblock %}

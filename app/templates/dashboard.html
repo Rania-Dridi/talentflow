@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Tableau de bord · TalentFlow{% endblock %}
+{% block content %}
+<header class="top">
+  <div><p class="eyebrow">Vue d'ensemble</p><h1>Bonjour, voici votre recrutement</h1></div>
+  <a class="btn" href="/board">Ouvrir le pipeline</a>
+</header>
+
+<section class="bento">
+  <article class="card kpi"><span>Offres ouvertes</span><b>{{ stats.open_jobs }}</b></article>
+  <article class="card kpi"><span>Candidatures</span><b>{{ stats.candidates }}</b></article>
+  <article class="card kpi accent"><span>Embauches</span><b>{{ stats.hired }}</b></article>
+  <article class="card kpi"><span>Score moyen</span><b>{{ stats.average_score }}<small>/100</small></b></article>
+
+  <article class="card funnel">
+    <h2>Entonnoir de recrutement</h2>
+    {% set base_count = stats.funnel[0].count or 1 %}
+    {% for step in stats.funnel %}
+    <div class="bar-row">
+      <span class="lbl">{{ step.label }}</span>
+      <div class="track"><div class="fill" style="width: {{ (100 * step.count / base_count) | round(0) }}%"></div></div>
+      <b>{{ step.count }}</b>
+    </div>
+    {% endfor %}
+    <p class="muted">Taux de conversion global : <strong>{{ stats.conversion_rate }} %</strong></p>
+  </article>
+
+  <article class="card list">
+    <h2>Meilleurs profils en cours</h2>
+    {% for c in top %}
+    <div class="person">
+      <span class="avatar">{{ c.initials }}</span>
+      <div><strong>{{ c.full_name }}</strong><small>{{ c.job.title }}</small></div>
+      <span class="score s{{ (c.score // 20) }}">{{ c.score }}</span>
+    </div>
+    {% endfor %}
+  </article>
+
+  <article class="card jobs-mini">
+    <h2>Offres à pourvoir</h2>
+    {% for job in jobs %}
+    <a class="job-line" href="/board?job_id={{ job.id }}">
+      <div><strong>{{ job.title }}</strong><small>{{ job.department }} · {{ job.location }} · {{ job.contract }}</small></div>
+      <span class="chip">{{ job.openings }} poste{{ 's' if job.openings > 1 }}</span>
+    </a>
+    {% endfor %}
+  </article>
+</section>
+{% endblock %}

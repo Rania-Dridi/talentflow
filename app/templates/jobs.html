@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Offres · TalentFlow{% endblock %}
+{% block content %}
+<header class="top"><div><p class="eyebrow">Offres</p><h1>Postes ouverts et clôturés</h1></div></header>
+<section class="job-grid">
+  {% for row in rows %}
+  <article class="card job">
+    <div class="row between"><span class="chip {{ 'closed' if row.job.status.value == 'closed' }}">{{ 'Clôturée' if row.job.status.value == 'closed' else 'Ouverte' }}</span><small>{{ row.job.contract }}</small></div>
+    <h2>{{ row.job.title }}</h2>
+    <p class="muted">{{ row.job.department }} · {{ row.job.location }}</p>
+    <div class="tags">{% for s in row.job.skills.split(',') %}<span>{{ s.strip() }}</span>{% endfor %}</div>
+    <div class="row between foot"><span><b>{{ row.total }}</b> candidats</span><span><b>{{ row.hired }}</b>/{{ row.job.openings }} embauché{{ 's' if row.job.openings > 1 }}</span></div>
+    <a class="btn ghost" href="/board?job_id={{ row.job.id }}">Voir le pipeline</a>
+  </article>
+  {% endfor %}
+</section>
+{% endblock %}

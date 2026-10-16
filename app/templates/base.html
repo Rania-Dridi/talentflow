@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}TalentFlow{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', path='css/app.css') }}">
+</head>
+<body>
+<div class="glow g1"></div><div class="glow g2"></div>
+<aside class="side">
+  <a class="logo" href="/"><span class="mark">TF</span> TalentFlow</a>
+  <nav>
+    <a href="/" class="{{ 'on' if page == 'dashboard' }}">Tableau de bord</a>
+    <a href="/board" class="{{ 'on' if page == 'board' }}">Pipeline</a>
+    <a href="/jobs" class="{{ 'on' if page == 'jobs' }}">Offres</a>
+    <a href="/docs" target="_blank" rel="noopener">API</a>
+  </nav>
+  <div class="side-foot">Recrutement IT<br><small>Démo · données fictives</small></div>
+</aside>
+<main class="main">{% block content %}{% endblock %}</main>
+{% block scripts %}{% endblock %}
+</body>
+</html>
